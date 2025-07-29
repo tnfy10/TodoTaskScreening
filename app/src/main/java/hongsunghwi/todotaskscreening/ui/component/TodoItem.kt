@@ -26,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -56,10 +57,25 @@ fun TodoItem(
             offsetX.snapTo(newOffset)
         }
     }
+    val completeButtonWidth = 44.dp
+    val desiredTextStartPadding = 8.dp
+    val textStartPadding = with(density) {
+        val completeButtonWidthPx = completeButtonWidth.toPx()
+        val desiredTextStartPaddingPx = desiredTextStartPadding.toPx()
+        val additionalPaddingMax =
+            desiredTextStartPaddingPx - completeButtonWidthPx + deleteButtonWidthPx
+        val ratio = if (deleteButtonWidthPx != 0f) {
+            offsetX.value / -deleteButtonWidthPx
+        } else {
+            0f
+        }
+        (ratio * additionalPaddingMax).toDp()
+    }
 
     Box(
         modifier = modifier
             .advancedShadow(alpha = 0.25f)
+            .clipToBounds()
             .background(TodoTaskScreeningTheme.colors.red)
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
@@ -83,7 +99,6 @@ fun TodoItem(
                 )
             )
         }
-
         Row(
             modifier = Modifier
                 .offset { IntOffset(offsetX.value.roundToInt(), 0) }
@@ -103,7 +118,8 @@ fun TodoItem(
                         }
                     }
                 )
-                .background(TodoTaskScreeningTheme.colors.white),
+                .background(TodoTaskScreeningTheme.colors.white)
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
@@ -127,7 +143,8 @@ fun TodoItem(
                 text = text,
                 modifier = Modifier
                     .padding(vertical = 16.dp)
-                    .weight(1f),
+                    .weight(1f)
+                    .padding(start = textStartPadding),
                 style = TodoTaskScreeningTheme.typography.bodyRegular2
             )
             Spacer(Modifier.width(16.dp))
