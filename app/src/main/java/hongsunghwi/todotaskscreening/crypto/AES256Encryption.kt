@@ -1,7 +1,6 @@
 package hongsunghwi.todotaskscreening.crypto
 
 import java.security.Key
-import java.security.SecureRandom
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 
@@ -12,15 +11,11 @@ class AES256Encryption {
     private val keySize = 256
 
     fun encrypt(data: ByteArray, key: Key): Pair<ByteArray, ByteArray> {
-        val iv = ByteArray(16)
-        SecureRandom().nextBytes(iv)
-        val ivParameterSpec = IvParameterSpec(iv)
-
         val cipher = Cipher.getInstance(transformation)
-        cipher.init(Cipher.ENCRYPT_MODE, key, ivParameterSpec)
+        cipher.init(Cipher.ENCRYPT_MODE, key)
         val encryptedData = cipher.doFinal(data)
 
-        return Pair(encryptedData, iv)
+        return Pair(encryptedData, cipher.iv)
     }
 
     fun decrypt(encryptedData: ByteArray, iv: ByteArray, key: Key): ByteArray {
