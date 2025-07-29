@@ -13,4 +13,7 @@
 
     <!-- MainScreen -->
     <string name="main_screen_title">DEEP.FINE TODO</string>
+
+    <!-- HistoryScreen -->
+    <string name="history_screen_title">History</string>
 </resources>

@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import hongsunghwi.todotaskscreening.ui.screen.HistoryRoute
 import hongsunghwi.todotaskscreening.ui.screen.MainRoute
 import hongsunghwi.todotaskscreening.ui.theme.TodoTaskScreeningTheme
 
@@ -36,9 +37,12 @@ class MainActivity : ComponentActivity() {
                         composable<MainRoute> {
                             MainRoute(
                                 onNavigateToHistory = {
-                                    // TODO: History로 이동
+                                    navController.navigateToHistory()
                                 }
                             )
+                        }
+                        composable<HistoryRoute> {
+                            HistoryRoute()
                         }
                     }
                 }
