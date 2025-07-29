@@ -18,14 +18,14 @@ import androidx.compose.ui.unit.dp
 import hongsunghwi.todotaskscreening.R
 import hongsunghwi.todotaskscreening.ui.theme.TodoTaskScreeningTheme
 import hongsunghwi.todotaskscreening.ui.theme.advancedShadow
-import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @Composable
 fun TodoCompleteItem(
     text: String,
-    regDate: LocalDate,
-    completeDate: LocalDate,
+    regDateTime: LocalDateTime,
+    completeDateTime: LocalDateTime?,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -53,15 +53,17 @@ fun TodoCompleteItem(
             Text(
                 text = stringResource(
                     R.string.todo_complete_item_reg_date,
-                    DateTimeFormatter.ofPattern("yyyy/MM/dd").format(regDate)
+                    DateTimeFormatter.ofPattern("yyyy/MM/dd").format(regDateTime)
                 ),
                 style = TodoTaskScreeningTheme.typography.labelRegular
             )
             Text(
-                text = stringResource(
-                    R.string.todo_complete_item_complete_date,
-                    DateTimeFormatter.ofPattern("yyyy/MM/dd").format(completeDate)
-                ),
+                text = completeDateTime?.let {
+                    stringResource(
+                        R.string.todo_complete_item_complete_date,
+                        DateTimeFormatter.ofPattern("yyyy/MM/dd").format(it)
+                    )
+                } ?: "-",
                 style = TodoTaskScreeningTheme.typography.labelRegular
             )
         }
@@ -74,8 +76,8 @@ private fun TodoCompleteItemPreview() {
     TodoTaskScreeningTheme {
         TodoCompleteItem(
             text = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-            regDate = LocalDate.now(),
-            completeDate = LocalDate.now()
+            regDateTime = LocalDateTime.now(),
+            completeDateTime = LocalDateTime.now()
         )
     }
 }
