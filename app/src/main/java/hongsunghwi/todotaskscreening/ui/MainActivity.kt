@@ -34,7 +34,11 @@ class MainActivity : ComponentActivity() {
                         startDestination = MainRoute
                     ) {
                         composable<MainRoute> {
-                            MainRoute()
+                            MainRoute(
+                                onNavigateToHistory = {
+                                    // TODO: History로 이동
+                                }
+                            )
                         }
                     }
                 }

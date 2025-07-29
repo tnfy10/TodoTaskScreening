@@ -6,4 +6,7 @@
 
     <!-- TodoItem -->
     <string name="todo_item_delete">삭제</string>
+
+    <!-- MainScreen -->
+    <string name="main_screen_title">DEEP.FINE TODO</string>
 </resources>
