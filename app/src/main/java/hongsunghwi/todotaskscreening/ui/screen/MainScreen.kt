@@ -151,13 +151,15 @@ private fun MainScreenPreview() {
         )
     }
 
-    MainScreen(
-        onClickHistory = {},
-        todos = todos,
-        onClickTodoComplete = {},
-        onClickTodoDelete = {},
-        todoValue = "Todo Test",
-        onTodoValueChange = {},
-        onClickConfirm = {}
-    )
+    TodoTaskScreeningTheme {
+        MainScreen(
+            onClickHistory = {},
+            todos = todos,
+            onClickTodoComplete = {},
+            onClickTodoDelete = {},
+            todoValue = "Todo Test",
+            onTodoValueChange = {},
+            onClickConfirm = {}
+        )
+    }
 }
