@@ -3,4 +3,7 @@
 
     <!-- TodoTextField -->
     <string name="todo_text_field_placholder">할 일을 입력해주세요.</string>
+
+    <!-- TodoItem -->
+    <string name="todo_item_delete">삭제</string>
 </resources>
