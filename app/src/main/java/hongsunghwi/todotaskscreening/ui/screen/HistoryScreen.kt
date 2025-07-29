@@ -14,12 +14,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import hongsunghwi.todotaskscreening.R
+import hongsunghwi.todotaskscreening.presentation.event.HistorySideEffect
+import hongsunghwi.todotaskscreening.presentation.event.HistoryUiEvent
+import hongsunghwi.todotaskscreening.presentation.viewmodel.HistoryViewModel
 import hongsunghwi.todotaskscreening.ui.component.CommonAppBar
 import hongsunghwi.todotaskscreening.ui.component.NavigationIconButton
 import hongsunghwi.todotaskscreening.ui.component.TodoCompleteItem
@@ -27,12 +32,22 @@ import hongsunghwi.todotaskscreening.ui.theme.TodoTaskScreeningTheme
 import java.time.LocalDate
 
 @Composable
-fun HistoryRoute() {
+fun HistoryRoute(
+    historyViewModel: HistoryViewModel = hiltViewModel()
+) {
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+
+    LaunchedEffect(Unit) {
+        historyViewModel.sideEffects.collect { sideEffect ->
+            when (sideEffect) {
+                HistorySideEffect.OnBack -> onBackPressedDispatcher?.onBackPressed()
+            }
+        }
+    }
 
     HistoryScreen(
         onBack = {
-            onBackPressedDispatcher?.onBackPressed()
+            historyViewModel.sendEvent(HistoryUiEvent.OnBack)
         }
     )
 }
