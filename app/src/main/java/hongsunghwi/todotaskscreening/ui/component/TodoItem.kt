@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import hongsunghwi.todotaskscreening.R
 import hongsunghwi.todotaskscreening.ui.theme.TodoTaskScreeningTheme
+import hongsunghwi.todotaskscreening.ui.theme.advancedShadow
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
@@ -58,9 +59,10 @@ fun TodoItem(
 
     Box(
         modifier = modifier
+            .advancedShadow(alpha = 0.25f)
+            .background(TodoTaskScreeningTheme.colors.red)
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
-            .background(TodoTaskScreeningTheme.colors.red)
     ) {
         Box(
             modifier = Modifier
