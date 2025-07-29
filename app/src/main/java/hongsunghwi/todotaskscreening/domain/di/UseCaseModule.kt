@@ -8,6 +8,7 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import hongsunghwi.todotaskscreening.crypto.AES256Encryption
 import hongsunghwi.todotaskscreening.crypto.KeystoreManager
 import hongsunghwi.todotaskscreening.domain.repository.TodoRepository
+import hongsunghwi.todotaskscreening.domain.usecase.AddTodoUseCase
 import hongsunghwi.todotaskscreening.domain.usecase.GetTodosUseCase
 
 @Module
@@ -21,4 +22,12 @@ object UseCaseModule {
         keystoreManager: KeystoreManager,
         aeS256Encryption: AES256Encryption
     ) = GetTodosUseCase(todoRepository, keystoreManager, aeS256Encryption)
+
+    @Provides
+    @ViewModelScoped
+    fun providesAddTodoUseCase(
+        todoRepository: TodoRepository,
+        keystoreManager: KeystoreManager,
+        aeS256Encryption: AES256Encryption
+    ) = AddTodoUseCase(todoRepository, keystoreManager, aeS256Encryption)
 }
