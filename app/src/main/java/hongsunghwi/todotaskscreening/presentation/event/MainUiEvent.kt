@@ -5,4 +5,5 @@ sealed class MainUiEvent {
     data class OnTodoValueChange(val value: String) : MainUiEvent()
     data object OnClickHistory : MainUiEvent()
     data class OnClickDelete(val id: Int) : MainUiEvent()
+    data class OnClickComplete(val id: Int) : MainUiEvent()
 }

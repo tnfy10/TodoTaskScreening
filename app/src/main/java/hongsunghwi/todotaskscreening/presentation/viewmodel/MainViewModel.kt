@@ -50,6 +50,10 @@ class MainViewModel @Inject constructor(
                 is MainUiEvent.OnClickDelete -> {
                     todoRepository.deleteTodo(event.id)
                 }
+
+                is MainUiEvent.OnClickComplete -> {
+                    todoRepository.setTodoCompleted(event.id)
+                }
             }
         }
     }

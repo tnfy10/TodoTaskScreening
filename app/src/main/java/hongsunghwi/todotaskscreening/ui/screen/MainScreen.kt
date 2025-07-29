@@ -55,7 +55,9 @@ fun MainRoute(
             mainViewModel.sendEvent(MainUiEvent.OnClickHistory)
         },
         todos = todos,
-        onClickTodoComplete = {},
+        onClickTodoComplete = {
+            mainViewModel.sendEvent(MainUiEvent.OnClickComplete(it))
+        },
         onClickTodoDelete = {
             mainViewModel.sendEvent(MainUiEvent.OnClickDelete(it))
         },
