@@ -13,9 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TodoTaskScreening">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:exported="true"
-            android:theme="@style/Theme.TodoTaskScreening">
+            android:theme="@style/Theme.TodoTaskScreening"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
