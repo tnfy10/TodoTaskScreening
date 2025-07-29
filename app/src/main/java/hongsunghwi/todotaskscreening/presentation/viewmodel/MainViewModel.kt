@@ -3,6 +3,7 @@ package hongsunghwi.todotaskscreening.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import hongsunghwi.todotaskscreening.domain.repository.TodoRepository
 import hongsunghwi.todotaskscreening.domain.usecase.AddTodoUseCase
 import hongsunghwi.todotaskscreening.domain.usecase.GetTodosUseCase
 import hongsunghwi.todotaskscreening.presentation.event.MainSideEffect
@@ -19,7 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     getTodosUseCase: GetTodosUseCase,
-    private val addTodoUseCase: AddTodoUseCase
+    private val addTodoUseCase: AddTodoUseCase,
+    private val todoRepository: TodoRepository
 ) : ViewModel() {
     val todosState = getTodosUseCase().stateIn(
         scope = viewModelScope,
@@ -43,6 +45,10 @@ class MainViewModel @Inject constructor(
 
                 MainUiEvent.OnClickHistory -> {
                     _sideEffects.send(MainSideEffect.NavigateToHistory)
+                }
+
+                is MainUiEvent.OnClickDelete -> {
+                    todoRepository.deleteTodo(event.id)
                 }
             }
         }
