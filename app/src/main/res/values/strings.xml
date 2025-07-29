@@ -7,6 +7,10 @@
     <!-- TodoItem -->
     <string name="todo_item_delete">삭제</string>
 
+    <!-- TodoCompleteItem -->
+    <string name="todo_complete_item_reg_date">등록일 : %s</string>
+    <string name="todo_complete_item_complete_date">완료일 : %s</string>
+
     <!-- MainScreen -->
     <string name="main_screen_title">DEEP.FINE TODO</string>
 </resources>
