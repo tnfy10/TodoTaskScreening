@@ -11,17 +11,21 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import hongsunghwi.todotaskscreening.R
+import hongsunghwi.todotaskscreening.domain.model.Todo
 import hongsunghwi.todotaskscreening.presentation.event.HistorySideEffect
 import hongsunghwi.todotaskscreening.presentation.event.HistoryUiEvent
 import hongsunghwi.todotaskscreening.presentation.viewmodel.HistoryViewModel
@@ -29,13 +33,14 @@ import hongsunghwi.todotaskscreening.ui.component.CommonAppBar
 import hongsunghwi.todotaskscreening.ui.component.NavigationIconButton
 import hongsunghwi.todotaskscreening.ui.component.TodoCompleteItem
 import hongsunghwi.todotaskscreening.ui.theme.TodoTaskScreeningTheme
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 @Composable
 fun HistoryRoute(
     historyViewModel: HistoryViewModel = hiltViewModel()
 ) {
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+    val completedTodos by historyViewModel.completedTodosState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         historyViewModel.sideEffects.collect { sideEffect ->
@@ -48,13 +53,15 @@ fun HistoryRoute(
     HistoryScreen(
         onBack = {
             historyViewModel.sendEvent(HistoryUiEvent.OnBack)
-        }
+        },
+        completedTodos = completedTodos
     )
 }
 
 @Composable
 private fun HistoryScreen(
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    completedTodos: List<Todo>
 ) {
     Column(
         modifier = Modifier
@@ -91,11 +98,14 @@ private fun HistoryScreen(
             ),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            items(30) {
+            items(
+                items = completedTodos,
+                key = { it.id }
+            ) { todo ->
                 TodoCompleteItem(
-                    text = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-                    regDate = LocalDate.now(),
-                    completeDate = LocalDate.now()
+                    text = todo.content,
+                    regDateTime = todo.regDateTime,
+                    completeDateTime = todo.completeDateTime
                 )
             }
             item {
@@ -108,9 +118,19 @@ private fun HistoryScreen(
 @Preview
 @Composable
 private fun HistoryScreenPreview() {
+    val todos = List(5) {
+        Todo(
+            id = it,
+            content = "Todo Test",
+            regDateTime = LocalDateTime.now(),
+            completeDateTime = LocalDateTime.now()
+        )
+    }
+
     TodoTaskScreeningTheme {
         HistoryScreen(
-            onBack = {}
+            onBack = {},
+            completedTodos = todos
         )
     }
 }
