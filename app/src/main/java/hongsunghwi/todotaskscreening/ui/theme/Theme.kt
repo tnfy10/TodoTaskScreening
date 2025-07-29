@@ -1,67 +1,94 @@
 package hongsunghwi.todotaskscreening.ui.theme
 
-import android.os.Build
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.Color
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+private val ColorPalette = TodoColors(
+    white = White,
+    black = Black,
+    red = Red,
+    gray01 = Gray01,
+    gray02 = Gray02,
+    gray03 = Gray03
 )
 
-private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
-)
+val LocalTodoColors = staticCompositionLocalOf<TodoColors> {
+    error("No TodoColorPalette provided")
+}
 
 @Composable
 fun TodoTaskScreeningTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
+    val colorPalette = remember { ColorPalette }
 
     CompositionLocalProvider(
-        LocalTypography provides Typography
+        LocalTypography provides Typography,
+        LocalTodoColors provides colorPalette
     ) {
         MaterialTheme(
-            colorScheme = colorScheme,
+            colorScheme = MaterialTheme.colorScheme.copy(
+                background = colorPalette.white
+            ),
             content = content
         )
     }
 }
 
 object TodoTaskScreeningTheme {
+    val colors: TodoColors
+        @Composable
+        get() = LocalTodoColors.current
     val typography: TodoTypography
         @Composable
         get() = LocalTypography.current
+}
+
+@Stable
+class TodoColors(
+    white: Color,
+    black: Color,
+    red: Color,
+    gray01: Color,
+    gray02: Color,
+    gray03: Color
+) {
+    var white: Color by mutableStateOf(white)
+        private set
+    var black: Color by mutableStateOf(black)
+        private set
+    var red: Color by mutableStateOf(red)
+        private set
+    var gray01: Color by mutableStateOf(gray01)
+        private set
+    var gray02: Color by mutableStateOf(gray02)
+        private set
+    var gray03: Color by mutableStateOf(gray03)
+        private set
+
+    fun update(other: TodoColors) {
+        white = other.white
+        black = other.black
+        red = other.red
+        gray01 = other.gray01
+        gray02 = other.gray02
+        gray03 = other.gray03
+    }
+
+    fun copy(): TodoColors = TodoColors(
+        white = white,
+        black = black,
+        red = red,
+        gray01 = gray01,
+        gray02 = gray02,
+        gray03 = gray03
+    )
 }
